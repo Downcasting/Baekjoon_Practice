@@ -35,12 +35,12 @@ int main(void){
                 bb = arr[i*blockSize + j];
                 if(bb > 0 && aa > LMAX - bb){
                     // OVERFLOW
-                    sumArr[i] += LMIN;
+                    sumArr[i] -= LMAX;
                     sumCarryArr[i] += 1;
                 }
                 if(bb < 0 && aa < LMIN - bb){
                     // UNDERFLOW
-                    sumArr[i] -= LMIN;
+                    sumArr[i] += LMAX;
                     sumCarryArr[i] -= 1;
                 }
                 sumArr[i] += arr[i*blockSize + j];
@@ -56,24 +56,24 @@ int main(void){
             case 1: // 바꾸기
                 if(arr[b-1] > 0 && c < LMIN + arr[b-1]){
                     // (-) - (+) => 양수 (UNDERFLOW)
-                    arr[b-1] += LMIN;
+                    arr[b-1] -= LMAX;
                     sumCarryArr[(b-1)/blockSize] += 1;
                 }
                 if(arr[b-1] < 0 && c < LMAX + arr[b-1]){
                     // (+) - (-) => 음수 (OVERFLOW)
-                    arr[b-1] -= LMIN;
+                    arr[b-1] += LMAX;
                     sumCarryArr[(b-1)/blockSize] -= 1;
                 }
                 diff = c - arr[b-1];
                 arr[b-1] = c;
                 if(diff > 0 && sumArr[(b-1)/blockSize] > LMAX - diff){
                     // OVERFLOW
-                    sumArr[(b-1)/blockSize] += LMIN;
+                    sumArr[(b-1)/blockSize] -= LMAX;
                     sumCarryArr[(b-1)/blockSize] += 1;
                 }
                 if(diff < 0 && sumArr[(b-1)/blockSize] < LMIN - diff){
                     // UNDERFLOW
-                    sumArr[(b-1)/blockSize] -= LMIN;
+                    sumArr[(b-1)/blockSize] += LMAX;
                     sumCarryArr[(b-1)/blockSize] -= 1;
                 }
                 sumArr[(b-1)/blockSize] += diff;
@@ -85,12 +85,12 @@ int main(void){
                 for(long long i= b-1; i < startBlock*blockSize && i <= (c-1); i++){ // Overflow 예방이 필요함
                     if(sum > 0 && arr[i] > LMAX - sum){
                         // OVERFLOW
-                        sum += LMIN;
+                        sum -= LMAX;
                         sumCarryArr[i / blockSize] += 1;
                     }
                     if(sum < 0 && arr[i] < LMIN - sum){
                         // UNDERFLOW
-                        sum -= LMIN;
+                        sum += LMAX;
                         sumCarryArr[i / blockSize] -= 1;
                     }
                     sum += arr[i];
@@ -98,12 +98,12 @@ int main(void){
                 for(long long i=startBlock; i <= endBlock; i++){
                     if(sum > 0 && sumArr[i] > LMAX - sum){
                         // OVERFLOW
-                        sum += LMIN;
+                        sum -= LMAX;
                         sumCarryArr[i / blockSize] += 1;
                     }
                     if(sum < 0 && sumArr[i] < LMIN - sum){
                         // UNDERFLOW
-                        sum -= LMIN;
+                        sum += LMAX;
                         sumCarryArr[i / blockSize] -= 1;
                     }
                     sum += sumArr[i];
@@ -111,12 +111,12 @@ int main(void){
                 for(long long i=(endBlock+1)*blockSize; i <= (c-1); i++){
                     if(sum > 0 && arr[i] > LMAX - sum){
                         // OVERFLOW
-                        sum += LMIN;
+                        sum -= LMAX;
                         sumCarryArr[i / blockSize] += 1;
                     }
                     if(sum < 0 && arr[i] < LMIN - sum){
                         // UNDERFLOW
-                        sum -= LMIN;
+                        sum += LMAX;
                         sumCarryArr[i / blockSize] -= 1;
                     }
                     sum += arr[i];
