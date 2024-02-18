@@ -22,7 +22,7 @@ int main(){
     long long num[10] = {0,};
     long long sum = 0;
     if(pages1 == 0 || pages1 == 1){
-        num[pages1] += 1;
+        //num[pages1] += 1;
     }
     else{
         int length1 = (int) floor(log10(pages1-1));
