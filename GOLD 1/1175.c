@@ -100,11 +100,11 @@ int main(void){
     
     Queue queue;
     initQueue(&queue);
-    int archive[N][M][4][2];
+    int archive[N][M][4][4];
     f(i,N){
         f(j,M){
             f(k,4){
-                f(l,2)
+                f(l,4)
                     archive[i][j][k][l] = 0;
             }
         }
@@ -143,6 +143,7 @@ int main(void){
         }
         f(i,queueSize){
             Vector* vec = dequeue(&queue);
+            //printf("%d level - (%d %d) heading [%d], delivery with [%d]\n",length, vec->row, vec->col, vec->dir, vec->delivery);
             for(int i=0; i<4; i++){
                 int newRow = vec->row + rowDir(i);
                 int newCol = vec->col + colDir(i);
