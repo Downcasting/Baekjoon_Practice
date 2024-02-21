@@ -23,7 +23,7 @@ int deli(int row, int col){
         return 2;
     else
         printf("WHAT\n");
-    return 99999;
+    return 0;
 }
 
 /* Struct Declaration */
@@ -137,6 +137,10 @@ int main(void){
     int queueSize = 0;
     while(1){
         queueSize  = size(&queue);
+        if (queueSize == 0) {
+            length = -1;
+            break;
+        }
         f(i,queueSize){
             Vector* vec = dequeue(&queue);
             for(int i=0; i<4; i++){
@@ -151,13 +155,13 @@ int main(void){
                             case -1:
                                 break;
                             case 100:
-                                if(!archive[newRow][newCol][i][vec->delivery]){
-                                    enqueue(&queue,makeVector(newRow,newCol,i,vec->delivery & deli(newRow, newCol)));
-                                    archive[newRow][newCol][i][vec->delivery & deli(newRow, newCol)] = length;
-                                    if((vec->delivery & deli(newRow, newCol)) == 3){
+                                if(!archive[newRow][newCol][i][vec->delivery | deli(newRow, newCol)]){
+                                    if((vec->delivery | deli(newRow, newCol)) == 3){
                                         printf("%d",length);
                                         return 0;
                                     }
+                                    enqueue(&queue,makeVector(newRow,newCol,i,vec->delivery | deli(newRow, newCol)));
+                                    archive[newRow][newCol][i][vec->delivery | deli(newRow, newCol)] = length;
                                 }
                                 break;
                             case 0:
@@ -171,11 +175,6 @@ int main(void){
                 }
             }
         }
-        if(isEmpty(&queue)){
-            length = -1;
-            break;
-        }
-        // delivery 도착 -> length 반환
         length++;
     }
     printf("%d",length);
