@@ -29,7 +29,7 @@ int main(void){
         scanf("%s",input);
         f(j,M){
             switch(input[j]){
-                case '#':
+                case '#': 
                     map[i][j] = -1;
                     break;
                 case '.':
