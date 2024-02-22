@@ -42,7 +42,9 @@ int main(void){
         scanf("%d %d %d",&n1, &n2, &w);
         edges[i] = makeEdge(nodes[n1-1], nodes[n2-1], w);
     }
-    qsort(edges, E, sizeof(Edge), compare);
+    qsort(edges, E, sizeof(Edge*), compare);
+    for(int i=0; i<E; i++)
+        printf("%d %d %d\n", edges[i]->node1->num+1, edges[i]->node2->num+1, edges[i]->weight);
 
     int totalWeight = 0;
     for(int i=0; i<E; i++){
@@ -77,13 +79,10 @@ Edge* makeEdge(Node* n1, Node* n2, int w){
     newEdge->weight = w;
     return newEdge;
 }
-int static compare (const void* first, const void* second)
-{
+int static compare(const void* first, const void* second) {
     return ((Edge*)first)->weight - ((Edge*)second)->weight;
 }
 Node* getParent(Node* node){ // ?
-    if(node == NULL)
-        return NULL;
     Node* nod = node;
     while(nod->parent != NULL){
         nod = nod->parent;
