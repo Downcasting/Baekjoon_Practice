@@ -9,6 +9,7 @@
 /* Struct */
 typedef struct Node{
     int num;
+    int height;
     struct Node* parent;
 } Node;
 typedef struct{
@@ -41,16 +42,23 @@ int main(void){
         scanf("%d %d %d",&n1, &n2, &w);
         edges[i] = makeEdge(nodes[n1-1], nodes[n2-1], w);
     }
-    qsort(edges, E, sizeof(Edge*), compare);
+    qsort(edges, E, sizeof(Edge), compare);
 
     int totalWeight = 0;
     for(int i=0; i<E; i++){
         if(!sameParents(edges[i])){
-            ((edges[i])->node1)->parent = edges[i]->node2;
+            if((edges[i])->node1->height > (edges[i])->node2->height)
+                (edges[i])->node2->parent = (edges[i])->node1;
+            else if((edges[i])->node1->height < (edges[i])->node2->height)
+                (edges[i])->node1->parent = (edges[i])->node2;
+            else{
+                (edges[i])->node1->parent = (edges[i])->node2;
+                (edges[i])->node2->height = (edges[i])->node2->height + 1;
+            }
             totalWeight += edges[i]->weight;
         }
     }
-    printf("%d", totalWeight);
+    printf("%d\n", totalWeight);
     return 0;
 }
 
@@ -58,6 +66,7 @@ int main(void){
 Node* makeNode(int num){
     Node* newNode = (Node*)malloc(sizeof(Node));
     newNode->num = num;
+    newNode->height = 0;
     newNode->parent = NULL;
     return newNode;
 }
@@ -70,14 +79,11 @@ Edge* makeEdge(Node* n1, Node* n2, int w){
 }
 int static compare (const void* first, const void* second)
 {
-    if (((Edge*)first)->weight > ((Edge*)second)->weight)
-        return 1;
-    else if (((Edge*)first)->weight < ((Edge*)second)->weight)
-        return -1;
-    else
-        return 0;
+    return ((Edge*)first)->weight - ((Edge*)second)->weight;
 }
 Node* getParent(Node* node){ // ?
+    if(node == NULL)
+        return NULL;
     Node* nod = node;
     while(nod->parent != NULL){
         nod = nod->parent;
