@@ -43,23 +43,27 @@ int main(void){
     }
     qsort(edges, E, sizeof(Edge*), compare);
     //for(int i=0; i<E; i++)
-        //printf("%d %d %d\n", edges[i]->node1->num+1, edges[i]->node2->num+1, edges[i]->weight);
+        //printf("%d: %d %d %d\n", i+1, edges[i]->node1->num+1, edges[i]->node2->num+1, edges[i]->weight);
 
     int totalWeight = 0;
     for(int i=0; i<E; i++){
         Node* n1 = getParent(edges[i]->node1);
         Node* n2 = getParent(edges[i]->node2);
         if(n1 != n2){
+            //printf("%dth part: %d %d connected [%d %d]\n",i+1, edges[i]->node1->num+1, edges[i]->node2->num+1, n1->num+1, n2->num+1);
             if(n1->height > n2->height)
                 n2->parent = n1;
             else if(n1->height < n2->height)
                 n1->parent = n2;
             else{
-                (edges[i])->node1->parent = n2;
+                n1->parent = n2;
                 n2->height = n2->height + 1;
             }
             totalWeight += edges[i]->weight;
         }
+        n1 = getParent(edges[i]->node1);
+        n2 = getParent(edges[i]->node2);
+        //printf("Then, %d %d connected [%d %d]\n",edges[i]->node1->num+1, edges[i]->node2->num+1, n1->num+1, n2->num+1);
     }
     printf("%d", totalWeight);
     return 0;
