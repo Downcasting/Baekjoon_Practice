@@ -72,6 +72,7 @@ int main(void){
             int maxJewel = pop(maxHeap); // 가장 높은 가치의 것들부터
             if(maxJewel != -1)
                 totalValue += maxJewel;
+            printf("%d was added to totalValue, sum: %d\n",maxJewel, totalValue);
         }
     }
     printf("%lld\n",totalValue);
