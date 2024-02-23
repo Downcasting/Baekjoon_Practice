@@ -5,6 +5,7 @@
 /* Define */
 #define MAX(a,b) a>b?a:b
 #define MIN(a,b) a>b?b:a
+#define f(i,N) for(int i=0; i<N; i++)
 
 /* Struct */
 
