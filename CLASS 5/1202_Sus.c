@@ -28,7 +28,7 @@ int main(void){
     int N, K;
     scanf("%d %d", &N, &K);
     Jewel* jewel[N];
-    Jewel** maxHeap = (Jewel**)malloc(N * sizeof(Jewel*));
+    Jewel** maxHeap = (Jewel**)malloc((2*N) * sizeof(Jewel*));
 
     int bag[K];
 
