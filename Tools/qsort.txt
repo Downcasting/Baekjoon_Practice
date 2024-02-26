@@ -11,4 +11,4 @@ int static compare (const void* first, const void* second)
 }
 
 /* 사용 방법 */
-qsort(배열, sizeof(배열) / sizeof(원소), sizeof(원소), compare);
+qsort(배열, 원소 개수, sizeof(원소), compare);
