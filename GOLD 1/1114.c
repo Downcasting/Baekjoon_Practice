@@ -1,3 +1,6 @@
+
+// 1114번 - 통나무 자르기
+
 #include <stdio.h>
 #include <math.h>
 

@@ -1,3 +1,6 @@
+
+// 1644번 - 소수의 연속합
+
 /* Include */
 #include <stdio.h>
 #include <stdlib.h>

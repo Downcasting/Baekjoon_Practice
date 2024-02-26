@@ -1,3 +1,6 @@
+
+// 1300번 - K번째 수
+
 #include <stdio.h>
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))

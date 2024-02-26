@@ -1,3 +1,6 @@
+
+// 1234번 - 샘플 코드
+
 /* Include */
 #include <stdio.h>
 #include <stdlib.h>

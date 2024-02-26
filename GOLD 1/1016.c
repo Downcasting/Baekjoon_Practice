@@ -1,3 +1,6 @@
+
+// 1016번 - 제곱 ㄴㄴ수
+
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>

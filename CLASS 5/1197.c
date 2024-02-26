@@ -1,3 +1,6 @@
+
+// 1197번 - 최소 스패닝 트리
+
 /* Include */
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,3 +1,6 @@
+
+// 1019번 - 책 페이지
+
 #include <stdio.h>
 #include <math.h>
 void recursive(int input, int digit, int* array){

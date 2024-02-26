@@ -1,3 +1,6 @@
+
+// 1081번 - 합
+
 #include <stdio.h>
 #include <math.h>
 

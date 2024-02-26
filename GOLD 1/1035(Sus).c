@@ -1,3 +1,6 @@
+
+// 1035번 - 조각 움직이기 <보류>
+
 #include <stdio.h>
 
 #define MIN(a,b) a>b?b:a

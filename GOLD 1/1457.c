@@ -1,3 +1,6 @@
+
+// 1457번 - 정확해
+
 #include <stdio.h>
 #include <math.h>
 

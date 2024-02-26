@@ -1,3 +1,6 @@
+
+// 1509번 - 팰린드롬 분할
+
 /* Include */
 #include <stdio.h>
 #include <stdlib.h>

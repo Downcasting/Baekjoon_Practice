@@ -1,3 +1,6 @@
+
+// 1450번 - 냅색문제
+
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>

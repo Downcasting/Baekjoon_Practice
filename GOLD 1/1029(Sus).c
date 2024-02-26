@@ -1,3 +1,6 @@
+
+// 1029번 - 그림 교환 <보류>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
