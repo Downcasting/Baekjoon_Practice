@@ -1,5 +1,5 @@
 
-// 2342번 - Dance Dance Revolution <작업 중>
+// 2342번 - Dance Dance Revolution
 
 /* Include */
 #include <stdio.h>
