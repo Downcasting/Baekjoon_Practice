@@ -33,15 +33,31 @@ int main(void){
     }
     f(i,size){
         f(j,size)
-            scanf("%d",map[0][i][j]);
+            scanf("%d",&map[0][i][j]);
     }
     move(0);
     printf("%d",max);
+    f(i,1365){
+        f(j,size)
+            free(map[i][j]);
+        free(map[i]);
+    }
+    free(map);
     return 0;
 }
 
 /* Functions */
 void move(int index){
+    /*
+    printf("Index %d;\n",index);
+    f(i,size){
+        f(j,size)
+            printf("%d ",map[index][i][j]);
+        printf("\n");
+    }
+    */
+    
+    
     if(index >= 341){
         f(i,size){
             f(j,size)
@@ -67,26 +83,30 @@ void move(int index){
 }
 void spinNpush(int origin, int** panel, int dir){
     
-    switch(dir){ // 돌리기
+    switch(dir % 4){ // 돌리기
         case 0:
-            // 270도 회전
+            // 오른쪽 - 270도 회전
             f(i, size){
                 f(j, size)
                     panel[(size-1)-j][i] = map[origin][i][j];
             }
             break;
         case 1:
-            // 무회전
+            // 위 - 무회전
+            f(i, size){
+                f(j, size)
+                    panel[i][j] = map[origin][i][j];
+            }
             break;
         case 2:
-            // 90도 회전
+            // 왼쪽 - 90도 회전
             f(i, size){
                 f(j, size)
                     panel[j][(size-1)-i] = map[origin][i][j];
             }
             break;
         case 3:
-            // 180도 회전
+            // 아래 - 180도 회전
             f(i, size){
                 f(j, size)
                     panel[(size-1)-i][j] = map[origin][i][j];
@@ -94,6 +114,21 @@ void spinNpush(int origin, int** panel, int dir){
             break;
         default:
             printf("WHAT\n");
+    }
+    // 같은 숫자 합치기
+    int moveCount = 1;  
+    while (moveCount > 0) {
+        moveCount = 0;  // 이동 횟수 초기화
+        for (int i = size - 1; i >= 1; i--) {
+            for (int j = 0; j < size; j++) {
+                if (panel[i][j] != 0 && panel[i - 1][j] == 0) {
+                    // 현재 칸의 숫자를 위로 이동
+                    panel[i - 1][j] = panel[i][j];
+                    panel[i][j] = 0;
+                    moveCount++;  // 이동이 발생했으므로 횟수 증가
+                }
+            }
+        }
     }
     f(i,size-1){
         f(j,size){
@@ -103,20 +138,31 @@ void spinNpush(int origin, int** panel, int dir){
             }
         }
     }
-    for(int i=size-1; i>=1; i--){
-        f(j,size){
-            if(panel[i][j] != 0 && panel[i-1][j] == 0){
-                panel[i-1][j] = panel[i][j];
-                panel[i][j] = 0;
+    moveCount = 1;  
+    while (moveCount > 0) {
+        moveCount = 0;  // 이동 횟수 초기화
+        for (int i = size - 1; i >= 1; i--) {
+            for (int j = 0; j < size; j++) {
+                if (panel[i][j] != 0 && panel[i - 1][j] == 0) {
+                    // 현재 칸의 숫자를 위로 이동
+                    panel[i - 1][j] = panel[i][j];
+                    panel[i][j] = 0;
+                    moveCount++;  // 이동이 발생했으므로 횟수 증가
+                }
             }
         }
     }
-    switch(dir){ // 원상복구
+    int temp[size][size];
+    f(i, size){
+        f(j, size)
+            temp[i][j] = panel[i][j];
+    }
+    switch(dir % 4){ // 원상복구
         case 0:
             // 270도 회전
             f(i, size){
                 f(j, size)
-                    panel[j][(size-1)-i] = map[origin][i][j];
+                    panel[j][(size-1)-i] = temp[i][j];
             }
             break;
         case 1:
@@ -126,14 +172,14 @@ void spinNpush(int origin, int** panel, int dir){
             // 90도 회전
             f(i, size){
                 f(j, size)
-                    panel[(size-1)-j][i] = map[origin][i][j];
+                    panel[(size-1)-j][i] = temp[i][j];
             }
             break;
         case 3:
             // 180도 회전
             f(i, size){
                 f(j, size)
-                    panel[(size-1)-i][j] = map[origin][i][j];
+                    panel[(size-1)-i][j] = temp[i][j];
             }
             break;
         default:
