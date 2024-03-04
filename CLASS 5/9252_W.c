@@ -29,13 +29,13 @@ int main(void){
     scanf("%s %s",input1, input2);
     length1 = strlen(input1);
     length2 = strlen(input2);
-    dp = (int**)malloc(length1*sizeof(int*));
-    f(i,length1){
-        dp[i] = (int*)malloc(length2*sizeof(int));
-        f(j,length2)
+    dp = (int**)malloc((length1+1)*sizeof(int*));
+    f(i,length1+1){
+        dp[i] = (int*)malloc((length2+1)*sizeof(int));
+        f(j,length2+1)
             dp[i][j] = -1;
     }
-    int big = recursive(length1-1,length2-1);
+    int big = recursive(length1,length2);
     printf("%d",big);
     return 0;
 }
