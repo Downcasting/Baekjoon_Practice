@@ -1,45 +1,46 @@
 
-// 9527번 - 합
+// 9527번 - 1의 개수 세기
 
+/* Include */
 #include <stdio.h>
-#include <math.h>
+#include <stdlib.h>
 
-void recursive(int input, int digit, long long* array){
-    int numPow = (int)round(pow(10,digit));
-    int currentNum = ((input - (input%numPow))/numPow) % 10;
-    if((int) floor(log10(input)) > digit){
-        array[0] += (input - input%(numPow*10)) / 10 - numPow;
-        for(int i=1; i<10; i++)
-            array[i] += (input - input%(numPow*10)) / 10;
-    }
-    for(int i=0; i<currentNum; i++)
-        array[i] += (digit == (int) floor(log10(input)) && !i) ? 0 : numPow;
-    array[currentNum] += 1 + floor(input % numPow);
-    if(digit)
-        recursive(input, digit-1, array);
-    return;
-}
-int main(){
-    int pages1, pages2;
-    scanf("%d %d",&pages1, &pages2);
-    long long num[10] = {0,};
-    long long sum = 0;
-    if(pages1 == 0 || pages1 == 1){
-        //num[pages1] += 1;
-    }
-    else{
-        int length1 = (int) floor(log10(pages1-1));
-        recursive(pages1-1,length1,num);
-    }
-    for(int i=0; i<10; i++)
-        num[i] *= -1;
-    if(pages2 != 0){
-        int length2 = (int) floor(log10(pages2));
-        
-        recursive(pages2,length2,num);
-    }
-    for(int i=1; i<10; i++)
-       sum += num[i]*i;
-    printf("%d",num[1]);
+/* Define */
+#define MAX(a,b) a>b?a:b
+#define MIN(a,b) a>b?b:a
+#define f(i,N) for(int i=0; i<N; i++)
+
+/* Struct */
+
+/* Global Var */
+
+/* Function */
+long long getBinary(long long input);
+
+/* Main */
+int main(void){
+    long long a, b;
+    scanf("%lld %lld",&a,&b);
+    long long bin = getBinary(b);
+    bin -= getBinary(a-1);
+    printf("%lld",bin);
     return 0;
+}
+
+/* Functions */
+long long getBinary(long long input){
+    long long total = 0;
+    long long test = input;
+    int index = 0;
+    while(test != 0){
+        test /= 2;
+        index++;
+    }
+    for(int i=index-1; i>= 0; i--){
+        if(i != index-1)
+            total += (input >> (i+1)) << i;
+        if(input & (1 << i))
+            total += 1 + (input % (1 << i));
+    }
+    return total;
 }
