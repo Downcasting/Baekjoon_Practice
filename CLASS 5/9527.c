@@ -37,10 +37,9 @@ long long getBinary(long long input){
         index++;
     }
     for(int i=index-1; i>= 0; i--){
-        if(i != index-1)
-            total += (input >> (i+1)) << i;
-        if(input & (1 << i))
-            total += 1 + (input % (1 << i));
+        total += (input >> (i+1)) << i;
+        if(input & (1LL << i))
+            total += 1LL + (input % (1LL << i));
     }
     return total;
 }
