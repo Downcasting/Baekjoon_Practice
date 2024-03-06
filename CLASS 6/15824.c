@@ -24,6 +24,9 @@ int main(void){
     scanf("%d",&num);
     arr = (int*)malloc(num*sizeof(int));
     qsort(arr,num,sizeof(int),compare);
+
+    
+
     return 0;
 }
 
