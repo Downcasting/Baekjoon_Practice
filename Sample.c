@@ -14,7 +14,7 @@
 
 /* Global Var */
 
-/* Function */
+/* Function Declarations */
 
 /* Main */
 int main(void){
