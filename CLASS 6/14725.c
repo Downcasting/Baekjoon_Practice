@@ -19,43 +19,48 @@ typedef struct Room{
 }Room;
 
 /* Global Var */
+Room** head;
 
 /* Function */
-Room** head;
+void recursive(char** input, int index, Room* room);
+Room* makeRoom(char* name);
+Room* place(Room* start, char* name);
+void print(Room* room, int level);
 
 /* Main */
 int main(void){
-    head = (Room**)malloc(15*sizeof(Room*));
-    f(i,15)
+    head = (Room**)malloc(1000*sizeof(Room*));
+    f(i,1000)
         head[i] = NULL;
 
     int info;
     scanf("%d",&info);
 
     int deep;
-    char input[240];
+    char** lines;
+    lines = (char**)malloc(15*sizeof(char*));
+    f(i,15)
+        lines[i] = (char*)malloc(16*sizeof(char));
     f(i,info){
         scanf("%d",&deep);
-        scanf("%s",input);
-        char lines[15][16];
-        lines[0] = strtok(input, " ");
-        for(int j=1; j<deep; j++)
-            strcpy(lines[j],strtok(NULL, " "));
+        for(int j=0; j<deep; j++)
+            scanf("%s", lines[j]);
         recursive(lines, deep, NULL);
     }
-
+    for(int i=0; i<1000 && head[i] != NULL; i++)
+        print(head[i], 0);
     return 0;
 }
 
 /* Functions */
-int recursive(char** input, int index, Room* room){
-    if(index == 1)
+void recursive(char** input, int index, Room* room){
+    if(index == 1 && room != NULL)
        return;
     Room* rom;
     if(room == NULL){
-        f(i,15){
+        f(i,1000){
             if(head[i] == NULL || strcmp(head[i]->name,input[0]) > 0){
-                for(int j=14; j>i; j--)
+                for(int j=999; j>i; j--)
                     head[j] = head[j-1];
                 head[i] = makeRoom(input[0]);
                 rom = head[i];
@@ -69,7 +74,9 @@ int recursive(char** input, int index, Room* room){
     }
     else
         rom = room;
-    Room* nextRoom = place(room, input[1]);
+    if(index == 1)
+        return;
+    Room* nextRoom = place(rom, input[1]);
     recursive(input+1, index-1, nextRoom);
 
 }
@@ -82,6 +89,7 @@ Room* makeRoom(char* name){
 }
 Room* place(Room* start, char* name){
     // 부모 노드로 시작
+
     if(start->child == NULL){
         start->child = makeRoom(name);
         return start->child;
@@ -94,6 +102,7 @@ Room* place(Room* start, char* name){
         Room* node = makeRoom(name);
         node->bro = now->bro;
         now->bro = node;
+        return node;
     }
     else if(strcmp(now->name, name) == 0)
         return now;
@@ -101,6 +110,18 @@ Room* place(Room* start, char* name){
         Room* node = makeRoom(name);
         node->bro = now;
         start->child = node;
+        return node;
     }
-    return node;
+    return NULL;
+}
+void print(Room* room, int level){
+    if(room == NULL)
+        return;
+    char bar[32];
+    memset(bar, '-', level*2);
+    bar[level*2] = '\0';
+    printf("%s%s\n",bar,room->name);
+    print(room->child,level+1);
+    print(room->bro,level);
+    return;
 }
