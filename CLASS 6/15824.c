@@ -14,7 +14,7 @@
 
 /* Global Var */
 int num;
-int* arr;
+long long* arr;
 
 /* Function Declarations */
 int static compare (const void* first, const void* second);
@@ -22,10 +22,25 @@ int static compare (const void* first, const void* second);
 /* Main */
 int main(void){
     scanf("%d",&num);
-    arr = (int*)malloc(num*sizeof(int));
-    qsort(arr,num,sizeof(int),compare);
-
+    arr = (long long*)malloc(num*sizeof(long long));
+    f(i,num)
+        scanf("%lld",&arr[i]);
     
+    qsort(arr,num,sizeof(long long),compare);
+
+    long long pow2[num];
+    pow2[0] = 1;
+    for(int i=1; i<num; i++){
+        pow2[i] = pow2[i-1] << 1;
+        if(pow2[i] >= 1000000007)
+            pow2[i] %= 1000000007LL;
+    }
+    long long total = 0;
+    f(i,num){
+        total += (pow2[i] - pow2[num-(i+1)])*arr[i];
+    }
+    total %= 1000000007LL;
+    printf("%lld",total);
 
     return 0;
 }
@@ -33,9 +48,9 @@ int main(void){
 /* Functions */
 int static compare (const void* first, const void* second)
 {
-    if (*(int*)first > *(int*)second)
+    if (*(long long*)first > *(long long*)second)
         return 1;
-    else if (*(int*)first < *(int*)second)
+    else if (*(long long*)first < *(long long*)second)
         return -1;
     else
         return 0;
