@@ -33,13 +33,15 @@ int main(void){
     for(int i=1; i<num; i++){
         pow2[i] = pow2[i-1] << 1;
         if(pow2[i] >= 1000000007)
-            pow2[i] %= 1000000007LL;
+            pow2[i] -= 1000000007LL;
     }
     long long total = 0;
     f(i,num){
-        total += (pow2[i] - pow2[num-(i+1)])*arr[i];
+        total += ((pow2[i] - pow2[num-(i+1)])*arr[i]) % 1000000007LL;
     }
     total %= 1000000007LL;
+    if(total < 0)
+        total += 1000000007LL;
     printf("%lld",total);
 
     return 0;
