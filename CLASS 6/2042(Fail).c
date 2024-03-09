@@ -1,4 +1,5 @@
 
+
 // 2042번 - 구간 합 구하기
 
 #include <stdio.h>
@@ -9,121 +10,95 @@
 #define LMIN LLONG_MIN
 
 int main(void){
-    long long N, M, K;
-    scanf("%lld %lld %lld",&N, &M, &K);
+    int N, M, K;
+    scanf("%d %d %d",&N, &M, &K);
 
-    long long blockCount = (long long) sqrt(N);
-    long long blockSize = blockCount;
-    if(blockCount*blockSize < N)
+    int blockCount = (int) sqrt(N); // 배열을 몇 개의 블록으로 나눌 지
+    int blockSize = blockCount;           // 각 블록의 사이즈는 몇으로 할 건지
+    while(blockCount*blockSize < N)                // 만약 조금 모자라면 개수 +1 +1 +1...
         blockCount++;
+
     long long arr[N];
     long long sumArr[blockCount];
-    long long sumCarryArr[blockCount]; // 여기의 1 = -LLMIN
+    int sumCarryArr[blockCount]; // 여기의 1 = LMAX
 
     long long dap[K];
     long long answer = 0;
 
-    for(long long i=0; i<N; i++)
+    for(int i=0; i<N; i++)
         scanf("%lld",&arr[i]);
-    for(long long i=0; i<blockCount; i++){
+    for(int i=0; i<blockCount; i++){
         sumArr[i] = 0;
         sumCarryArr[i] = 0;
     }
-
     long long aa, bb;
-    for(long long i=0; i<blockCount; i++){
-        for(long long j=0; j<blockSize; j++){
-            if(i*blockSize + j < N){ // 아직 끝에 다다르지 않음
-                aa = sumArr[i];
-                bb = arr[i*blockSize + j];
-                if(bb > 0 && aa > LMAX - bb){
-                    // OVERFLOW
-                    sumArr[i] -= LMAX;
-                    sumCarryArr[i] += 1;
-                }
-                if(bb < 0 && aa < LMIN - bb){
-                    // UNDERFLOW
-                    sumArr[i] += LMAX;
-                    sumCarryArr[i] -= 1;
-                }
-                sumArr[i] += arr[i*blockSize + j];
-            }
+    for(int ind=0; ind<N; ind++){
+        int i = ind / blockSize;
+        int j = ind % blockSize;
+        aa = sumArr[i];
+        bb = arr[ind];
+        if((bb < 0 && aa < LMIN - bb) || (bb > 0 && aa > LMAX - bb)){
+            // 오버플로우 또는 언더플로우
+            sumArr[i] = sumArr[i] ^ (1ULL << 63);
+            sumCarryArr[i] += aa > 0 ? 1 : -1;
         }
+        sumArr[i] += arr[ind];
+        
     }
-    long long a, b, c;
-    long long diff; // = c - arr[b-1] (기존에서의 변화값)
-    long long sum, startBlock, endBlock;
-    for(long long ii=0; ii<M+K; ii++){
-        scanf("%lld %lld %lld",&a,&b,&c);
+
+    int a, b;
+    long long c, diff, sum;
+    int startBlock, endBlock, sumCarry;
+    for(int ii=0; ii<M+K; ii++){
+        scanf("%d %d %lld",&a,&b,&c);
         switch(a){
             case 1: // 바꾸기
-                if(arr[b-1] > 0 && c < LMIN + arr[b-1]){
-                    // (-) - (+) => 양수 (UNDERFLOW)
-                    arr[b-1] -= LMAX;
-                    sumCarryArr[(b-1)/blockSize] += 1;
-                }
-                if(arr[b-1] < 0 && c < LMAX + arr[b-1]){
-                    // (+) - (-) => 음수 (OVERFLOW)
-                    arr[b-1] += LMAX;
-                    sumCarryArr[(b-1)/blockSize] -= 1;
+                // 일단 diff를 구하고
+                if((arr[b-1] > 0 && c < LMIN + arr[b-1]) || (arr[b-1] < 0 && c < LMAX + arr[b-1])){
+                    // diff의 오버(언더)플로우 감지
+                    arr[b-1] = arr[b-1] ^ (1ULL << 63);
+                    sumCarryArr[(b-1)/blockSize] += c > 0 ? 1 : -1;
                 }
                 diff = c - arr[b-1];
                 arr[b-1] = c;
-                if(diff > 0 && sumArr[(b-1)/blockSize] > LMAX - diff){
-                    // OVERFLOW
-                    sumArr[(b-1)/blockSize] -= LMAX;
-                    sumCarryArr[(b-1)/blockSize] += 1;
-                }
-                if(diff < 0 && sumArr[(b-1)/blockSize] < LMIN - diff){
-                    // UNDERFLOW
-                    sumArr[(b-1)/blockSize] += LMAX;
-                    sumCarryArr[(b-1)/blockSize] -= 1;
+
+                // 그리고 그 diff를 sumArr에 대입하기
+                if((diff > 0 && sumArr[(b-1)/blockSize] > LMAX - diff) || (diff < 0 && sumArr[(b-1)/blockSize] < LMIN - diff)){
+                    // diff 합의 오버(언더플로우)
+                    sumArr[(b-1)/blockSize] = sumArr[(b-1)/blockSize] ^ (1ULL << 63);
+                    sumCarryArr[(b-1)/blockSize] += diff > 0 ? 1 : -1;
                 }
                 sumArr[(b-1)/blockSize] += diff;
                 break;
             case 2: // 더하기
                 sum = 0;
-                startBlock = (long long) ceil((double)(b-1) / (double)blockSize);
+                sumCarry = 0;
+                startBlock = (int) ceil((double)(b-1) / (double)blockSize);
                 endBlock = c / blockSize - 1;
-                for(long long i= b-1; i < startBlock*blockSize && i <= (c-1); i++){ // Overflow 예방이 필요함
-                    if(sum > 0 && arr[i] > LMAX - sum){
-                        // OVERFLOW
-                        sum -= LMAX;
-                        sumCarryArr[i / blockSize] += 1;
-                    }
-                    if(sum < 0 && arr[i] < LMIN - sum){
-                        // UNDERFLOW
-                        sum += LMAX;
-                        sumCarryArr[i / blockSize] -= 1;
+                for(int i= b-1; i < startBlock*blockSize && i <= (c-1); i++){ // Overflow 예방이 필요함
+                    if((sum > 0 && arr[i] > LMAX - sum) || (sum < 0 && arr[i] < LMIN - sum)){
+                        sum = sum ^ (1ULL << 63);
+                        sumCarry += sum > 0 ? 1 : -1;
                     }
                     sum += arr[i];
                 }
-                for(long long i=startBlock; i <= endBlock; i++){
-                    if(sum > 0 && sumArr[i] > LMAX - sum){
-                        // OVERFLOW
-                        sum -= LMAX;
-                        sumCarryArr[i / blockSize] += 1;
-                    }
-                    if(sum < 0 && sumArr[i] < LMIN - sum){
-                        // UNDERFLOW
-                        sum += LMAX;
-                        sumCarryArr[i / blockSize] -= 1;
+                for(int i=startBlock; i <= endBlock; i++){
+                    if((sum > 0 && sumArr[i] > LMAX - sum) || (sum < 0 && sumArr[i] < LMIN - sum)){
+                        sum = sum ^ (1ULL << 63);
+                        sumCarry += sum > 0 ? 1 : -1;
                     }
                     sum += sumArr[i];
+                    sumCarry += sumCarryArr[i];
                 }
-                for(long long i=(endBlock+1)*blockSize; i <= (c-1); i++){
-                    if(sum > 0 && arr[i] > LMAX - sum){
-                        // OVERFLOW
+                for(int i=(endBlock+1)*blockSize; i <= (c-1); i++){
+                    if((sum > 0 && arr[i] > LMAX - sum) || (sum < 0 && arr[i] < LMIN - sum)){
                         sum -= LMAX;
-                        sumCarryArr[i / blockSize] += 1;
-                    }
-                    if(sum < 0 && arr[i] < LMIN - sum){
-                        // UNDERFLOW
-                        sum += LMAX;
-                        sumCarryArr[i / blockSize] -= 1;
+                        sumCarry += sum > 0 ? 1 : -1;
                     }
                     sum += arr[i];
                 }
+                if(sumCarry != 0)
+                    sum = sum ^ (1ULL << 63);
                 // 값 출력
                 dap[answer++] = sum;
                 break;
@@ -131,7 +106,7 @@ int main(void){
             printf("What\n");
         }
     }
-    for(long long i=0; i<answer; i++)
+    for(int i=0; i<answer; i++)
         printf("%lld\n",dap[i]);
     return 0;
 }
