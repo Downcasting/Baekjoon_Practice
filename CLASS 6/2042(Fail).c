@@ -20,7 +20,7 @@ int main(void){
 
     long long arr[N];
     long long sumArr[blockCount];
-    int sumCarryArr[blockCount]; // 여기의 1 = LMAX
+    int sumCarryArr[blockCount]; // 여기의 1 = 2^63
 
     long long dap[K];
     long long answer = 0;
