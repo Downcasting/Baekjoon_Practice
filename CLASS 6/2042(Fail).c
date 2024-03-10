@@ -39,6 +39,7 @@ int main(void){
         bb = arr[ind];
         if((bb < 0 && aa < LMIN - bb) || (bb > 0 && aa > LMAX - bb)){
             // 오버플로우 또는 언더플로우
+// 부호 검사 순서 제대로!!!!
             sumArr[i] = sumArr[i] ^ (1ULL << 63);
             sumCarryArr[i] += aa > 0 ? 1 : -1;
         }
