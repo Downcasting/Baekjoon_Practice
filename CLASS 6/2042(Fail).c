@@ -39,9 +39,9 @@ int main(void){
         bb = arr[ind];
         if((bb < 0 && aa < LMIN - bb) || (bb > 0 && aa > LMAX - bb)){
             // 오버플로우 또는 언더플로우
-// 부호 검사 순서 제대로!!!!
-            sumArr[i] = sumArr[i] ^ (1ULL << 63);
+            // 부호 검사 순서 제대로!!!!
             sumCarryArr[i] += aa > 0 ? 1 : -1;
+            sumArr[i] = sumArr[i] ^ (1ULL << 63);
         }
         sumArr[i] += arr[ind];
         
@@ -57,8 +57,8 @@ int main(void){
                 // 일단 diff를 구하고
                 if((arr[b-1] > 0 && c < LMIN + arr[b-1]) || (arr[b-1] < 0 && c < LMAX + arr[b-1])){
                     // diff의 오버(언더)플로우 감지
-                    arr[b-1] = arr[b-1] ^ (1ULL << 63);
                     sumCarryArr[(b-1)/blockSize] += arr[b-1] < 0 ? 1 : -1;
+                    arr[b-1] = arr[b-1] ^ (1ULL << 63);
                 }
                 diff = c - arr[b-1];
                 arr[b-1] = c;
@@ -66,8 +66,8 @@ int main(void){
                 // 그리고 그 diff를 sumArr에 대입하기
                 if((diff > 0 && sumArr[(b-1)/blockSize] > LMAX - diff) || (diff < 0 && sumArr[(b-1)/blockSize] < LMIN - diff)){
                     // diff 합의 오버(언더플로우)
-                    sumArr[(b-1)/blockSize] = sumArr[(b-1)/blockSize] ^ (1ULL << 63);
                     sumCarryArr[(b-1)/blockSize] += diff > 0 ? 1 : -1;
+                    sumArr[(b-1)/blockSize] = sumArr[(b-1)/blockSize] ^ (1ULL << 63);
                 }
                 sumArr[(b-1)/blockSize] += diff;
                 break;
@@ -78,23 +78,23 @@ int main(void){
                 endBlock = c / blockSize - 1;
                 for(int i= b-1; i < startBlock*blockSize && i <= (c-1); i++){ // Overflow 예방이 필요함
                     if((sum > 0 && arr[i] > LMAX - sum) || (sum < 0 && arr[i] < LMIN - sum)){
-                        sum = sum ^ (1ULL << 63);
                         sumCarry += sum > 0 ? 1 : -1;
+                        sum = sum ^ (1ULL << 63);
                     }
                     sum += arr[i];
                 }
                 for(int i=startBlock; i <= endBlock; i++){
                     if((sum > 0 && sumArr[i] > LMAX - sum) || (sum < 0 && sumArr[i] < LMIN - sum)){
-                        sum = sum ^ (1ULL << 63);
                         sumCarry += sum > 0 ? 1 : -1;
+                        sum = sum ^ (1ULL << 63);
                     }
                     sum += sumArr[i];
                     sumCarry += sumCarryArr[i];
                 }
                 for(int i=(endBlock+1)*blockSize; i <= (c-1); i++){
                     if((sum > 0 && arr[i] > LMAX - sum) || (sum < 0 && arr[i] < LMIN - sum)){
-                        sum = sum ^ (1ULL << 63);
                         sumCarry += sum > 0 ? 1 : -1;
+                        sum = sum ^ (1ULL << 63);
                     }
                     sum += arr[i];
                 }
