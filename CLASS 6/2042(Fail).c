@@ -6,9 +6,6 @@
 #include <math.h>
 #include <limits.h>
 
-#define LMAX LLONG_MAX
-#define LMIN LLONG_MIN
-
 int main(void){
     int N, M, K;
     scanf("%d %d %d",&N, &M, &K);
