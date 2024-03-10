@@ -57,7 +57,7 @@ int main(void){
                 if((arr[b-1] > 0 && c < LMIN + arr[b-1]) || (arr[b-1] < 0 && c < LMAX + arr[b-1])){
                     // diff의 오버(언더)플로우 감지
                     arr[b-1] = arr[b-1] ^ (1ULL << 63);
-                    sumCarryArr[(b-1)/blockSize] += c > 0 ? 1 : -1;
+                    sumCarryArr[(b-1)/blockSize] += arr[b-1] < 0 ? 1 : -1;
                 }
                 diff = c - arr[b-1];
                 arr[b-1] = c;
