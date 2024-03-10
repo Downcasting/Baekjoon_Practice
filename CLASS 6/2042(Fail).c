@@ -92,7 +92,7 @@ int main(void){
                 }
                 for(int i=(endBlock+1)*blockSize; i <= (c-1); i++){
                     if((sum > 0 && arr[i] > LMAX - sum) || (sum < 0 && arr[i] < LMIN - sum)){
-                        sum -= LMAX;
+                        sum = sum ^ (1ULL << 63);
                         sumCarry += sum > 0 ? 1 : -1;
                     }
                     sum += arr[i];
