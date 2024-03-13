@@ -22,7 +22,7 @@ int main(void){
     long long n;
     scanf("%lld",&n);
     int sqrN = (int)sqrt(n);
-    int divisor[sqrN];
+    long long divisor[30];
     int num=0;
     long long temp = n;
     if(temp % 2 == 0){
@@ -41,13 +41,24 @@ int main(void){
         if(temp == 1)
             break;
     }
-    divisor[num++] = temp;
+    if(temp != 1)
+        divisor[num++] = temp;
     temp = n;
+    /*
+       printf("Divisor: ");
+        f(i,num)
+            printf("%d ", divisor[i]);
+        printf("\nTemp: "); 
+    */
+    
     f(i,num){
-        temp -= n/divisor[i];
+        temp /= divisor[i];
+        temp *= (divisor[i]-1);
+        //printf("%lld ",temp);
     }
+    //printf("\n");
 
-    printf("%d",temp);
+    printf("%lld",temp);
     return 0;
 }
 
