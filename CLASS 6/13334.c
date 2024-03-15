@@ -33,7 +33,12 @@ int main(void){
         lines[i] = makeLine(MIN(a,b),MAX(a,b));
     }
     scanf("%d",&length);
+    qsort
     int many = 0;
+    int lastStart = lines[0]->start;
+    int lastStartNext;
+    int maxNum = 0;
+    int currentNum = 0;
     f(i,num){
         
     }
