@@ -19,6 +19,7 @@ typedef struct Line{
 /* Global Var */
 int num;
 Line** lines;
+Line** heap;
 int length;
 
 /* Function Declarations */
@@ -27,19 +28,22 @@ int length;
 int main(void){
     scanf("%d",&num);
     lines = (Line**)malloc(num*sizeof(Line*));
+    heap = (Line**)malloc(num*sizeof(Line*));
     int a, b;
     f(i,num){
         scanf("%d %d",&a, &b);
         lines[i] = makeLine(MIN(a,b),MAX(a,b));
     }
     scanf("%d",&length);
-    qsort
+    qsort(lines, num, sizeof(Line*),compare);
     int many = 0;
     int lastStart = lines[0]->start;
     int lastStartNext;
     int maxNum = 0;
     int currentNum = 0;
     f(i,num){
+        if(lines[i]->end - lines[i]->start > length)
+            continue;
         
     }
     return 0;
