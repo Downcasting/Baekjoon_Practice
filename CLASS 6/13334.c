@@ -24,6 +24,9 @@ int heapSize;
 int length;
 
 /* Function Declarations */
+Line* makeLine(int a, int b);
+int static compare (const void* first, const void* second);
+void addHeap(Line* line);
 
 /* Main */
 int main(void){
@@ -73,13 +76,13 @@ int static compare (const void* first, const void* second)
 }
 void addHeap(Line* line){
     int curr;
-    while(line->end - heap[1]->start > length && heap[1] != NULL){
+    while(heap[1] != NULL && line->end - heap[1]->start > length){
         heap[1] = heap[heapSize];
         heap[heapSize--] = NULL;
         curr = 1;
         while(2*curr <= heapSize){
-            int s1 = heap[curr*2] == NULL ? 2147483647 : heap[curr*2]->start;
-            int s2 = heap[curr*2] == NULL ? 2147483647 : heap[curr*2+1]->start;
+            int s1 = heap[curr*2] == NULL ? 300000000 : heap[curr*2]->start;
+            int s2 = heap[curr*2+1] == NULL ? 300000000 : heap[curr*2+1]->start;
             if(MIN(s1,s2) < heap[curr]->start){
                 if(s1 < s2){
                     Line* temp = heap[curr];
@@ -100,8 +103,8 @@ void addHeap(Line* line){
     }
     heap[++heapSize] = line;
     curr = heapSize;
-    while(curr > 0){
-        if(heap[curr/2]->start > heap[curr]){
+    while(curr > 1){
+        if(heap[curr/2]->start > heap[curr]->start){
             Line* temp = heap[curr];
             heap[curr] = heap[curr/2];
             heap[curr/2] = temp;
