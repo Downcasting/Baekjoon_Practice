@@ -46,6 +46,7 @@ int main(void){
         addHeap(lines[i]);
         maxSize = MAX(heapSize, maxSize);
     }
+    printf("%d",maxSize);
     return 0;
 }
 
