@@ -29,14 +29,21 @@ Node* getMin(int start, int end, int index, int L, int R);
 
 /* Main */
 int main(void){
+    // 1 : N 입력받음
     scanf("%d",&num);
-    arr = (int*)malloc(num*sizeof(num));
+    arr = (int*)malloc(num*sizeof(int));
     tree = (Node**)malloc(num*4*sizeof(Node*));
+
+    // 2 : 배열 입력받음
     f(i,num)
         scanf("%d",&arr[i]);
     makeTree(0,num-1,1);
+
+    // 3 : 들어올 쿼리 개수들 입력받음
     int query;
     scanf("%d",&query);
+
+    // 4 : 들어올 쿼리들 입력받음
     int a, b, c;
     int answer[query];
     int now=0;
@@ -59,8 +66,9 @@ int main(void){
 /* Functions */
 Node* makeNode(int num, int index){
     Node* newNode = (Node*)malloc(sizeof(Node));
-    newNode->index = index;
     newNode->min = num;
+    newNode->index = index;
+    return newNode;
 }
 Node* makeTree(int start, int end, int index){
     if(start == end){
