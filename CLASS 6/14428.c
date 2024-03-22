@@ -22,6 +22,10 @@ int* arr;
 int num;
 
 /* Function Declarations */
+Node* makeNode(int num, int index);
+Node* makeTree(int start, int end, int index);
+Node* update(int start, int end, int index, int target, int newData);
+Node* getMin(int start, int end, int index, int L, int R);
 
 /* Main */
 int main(void){
@@ -34,19 +38,21 @@ int main(void){
     int query;
     scanf("%d",&query);
     int a, b, c;
+    int answer[query];
+    int now=0;
     f(i,query){
         scanf("%d %d %d",&a,&b,&c);
         if(a==1){
             update(0,num-1,1,b-1,c);
         }
         else if(a==2){
-            int minn = getMin(0,num-1,1,b-1,c-1)->min;
-            printf("%d\n",minn);
+            answer[now++] = getMin(0,num-1,1,b-1,c-1)->min;
         }
         else
             printf("WTF??\n");
     }
-
+    f(i,now)
+        printf("%d\n",answer[i]);
     return 0;
 }
 
@@ -58,7 +64,7 @@ Node* makeNode(int num, int index){
 }
 Node* makeTree(int start, int end, int index){
     if(start == end){
-        tree[index] = newNode(arr[start], index);
+        tree[index] = makeNode(arr[start], index);
         return tree[index];
     }
     int mid = (start+end)/2;
@@ -74,10 +80,10 @@ Node* update(int start, int end, int index, int target, int newData){
             arr[start] = newData;
             tree[index]->min = arr[start];
         }
-        return arr[start];
+        return tree[index];
     }
     int mid = (start+end)/2;
-    int smaller = update(start,mid,index*2,target,newData)->min <= update(mid+1,end,index*2+1,target,newData)->min ? index*2, index*2+1;
+    int smaller = update(start,mid,index*2,target,newData)->min <= update(mid+1,end,index*2+1,target,newData)->min ? index*2 : index*2+1;
     tree[index]->min = tree[smaller]->min;
     tree[index]->index = tree[smaller]->index;
     return tree[index];
@@ -88,6 +94,6 @@ Node* getMin(int start, int end, int index, int L, int R){
     if(L <= start && end <= R)
         return tree[index];
     int mid = (start+end)/2;
-    int smaller = getMin(start,mid,index*2,target,newData)->min <= getMin(mid+1,end,index*2+1,target,newData)->min ? index*2, index*2+1;
+    int smaller = getMin(start,mid,index*2,L,R)->min <= getMin(mid+1,end,index*2+1,L,R)->min ? index*2 : index*2+1;
     return tree[smaller];
 }
