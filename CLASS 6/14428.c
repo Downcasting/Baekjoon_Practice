@@ -11,6 +11,10 @@
 #define f(i,N) for(int i=0; i<N; i++)
 
 /* Struct */
+typedef struct Node{
+    int min;
+    int index;
+}Node;
 
 /* Global Var */
 
