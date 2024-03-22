@@ -4,7 +4,7 @@ long long makeTree(int start, int end, int index){
         return arr[start];
     }
     int mid = (start+end)/2;
-    tree[index] = (makeTree(start, mid, index*2) + makeTree(mid+1, end, index*2+1)) % SOSU;
+    tree[index] = (makeTree(start, mid, index*2) + makeTree(mid+1, end, index*2+1));
     return tree[index];
 }
 long long update(int start, int end, int index, int target, long long newData){
