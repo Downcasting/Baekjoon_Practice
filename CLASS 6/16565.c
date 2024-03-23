@@ -33,6 +33,8 @@ int main(void){
             count -= comb(13,i+1)*comb(48-i*4,N-4-i*4);
         count %= 10007;
     }
+    if(count < 0)
+        count += 10007;
     printf("%d",count);
     return 0;
 }
