@@ -53,7 +53,7 @@ int main(void){
             update(0,num-1,1,b-1,c);
         }
         else if(a==2){
-            answer[now++] = getMin(0,num-1,1,b-1,c-1)->min;
+            answer[now++] = getMin(0,num-1,1,b-1,c-1)->index+1;
         }
         else
             printf("WTF??\n");
@@ -72,7 +72,7 @@ Node* makeNode(int num, int index){
 }
 Node* makeTree(int start, int end, int index){
     if(start == end){
-        tree[index] = makeNode(arr[start], index);
+        tree[index] = makeNode(arr[start], start);
         return tree[index];
     }
     int mid = (start+end)/2;
@@ -102,6 +102,7 @@ Node* getMin(int start, int end, int index, int L, int R){
     if(L <= start && end <= R)
         return tree[index];
     int mid = (start+end)/2;
-    int smaller = getMin(start,mid,index*2,L,R)->min <= getMin(mid+1,end,index*2+1,L,R)->min ? index*2 : index*2+1;
-    return tree[smaller];
+    Node* a = getMin(start,mid,index*2,L,R);
+    Node* b = getMin(mid+1,end,index*2+1,L,R);
+    return a->min <= b->min ? a:b;
 }
