@@ -61,8 +61,8 @@ int main(void){
         else if(AB[left] + CD[right] < 0)
             left++;
         else{
-            int leftCount = 1;
-            int rightCount = 1;
+            long long leftCount = 1;
+            long long rightCount = 1;
 
             // AB 배열에서 동일한 값 개수 세기
             while (left + leftCount < num * num && AB[left + leftCount] == AB[left]) {
