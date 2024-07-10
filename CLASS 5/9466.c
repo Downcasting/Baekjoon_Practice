@@ -20,25 +20,30 @@ int currentAdd;
 int count;
 
 /* Function Declarations */
-void dfs(int n);
+void dfs(int n, int j);
 
 /* Main */
 int main(void){
     int T, num, input;
     cycleArray = (int*)malloc(4);
     nodeArray = (int*)malloc(4);
+    visited = (int*)malloc(4);
 
     scanf("%d", &T);
     f(i,T){
         scanf("%d", &num);
+
         free(cycleArray);
         free(nodeArray);
         free(visited);
+
         cycleArray = (int*)malloc(sizeof(int)*num);
         nodeArray = (int*)malloc(sizeof(int)*num);
         visited = (int*)malloc(sizeof(int)*num);
+
         memset(cycleArray, -1, num*sizeof(int));
         memset(visited, 0, num*sizeof(int));
+
         f(j,num){
             scanf("%d", &input);
             nodeArray[j] = input-1;
@@ -47,7 +52,7 @@ int main(void){
         f(j,num){
             currentAdd = 0;
             if(visited[j] == 0)
-                dfs(j);
+                dfs(j, j+1);
         }
         printf("%d\n",count);
     }
@@ -56,22 +61,30 @@ int main(void){
 }
 
 /* Functions */
-void dfs(int n){
-    visited[n] = 1;
+void dfs(int n, int j){
+    visited[n] = j;
     cycleArray[currentAdd++] = n;
 
     int next = nodeArray[n];
 
-    if(visited[next] == 1){ // 도착하려는 곳이 이미 방문한 곳
-        int add=0;
-        f(i,currentAdd){
-            if(cycleArray[i] == n)
-                break;
-            add++;
+    if(visited[next] != 0){ // 도착하려는 곳이 이미 방문한 곳
+        if(visited[next] == j){ // 이번 iteration이 맞음
+            int add=0;
+            f(i,currentAdd){
+                if(cycleArray[i] == next)
+                    break;
+                add++;
+            }
+            count -= currentAdd-add;
+            //printf("CurrentAdd: %d, add: %d\n",currentAdd,add);
+            //printf("[Cycle] Count has reduced to %d from %d, iteration %d\n",count, count + currentAdd-add, j);
+            return;
         }
-        count -= currentAdd-add;
-        return;
+        else{                   // 이번 iteration이 아님(막다른 길)
+            //printf("[NO Cycle] Count has reduced to %d from %d, iteration %d\n", count, count + currentAdd, j);
+            return;
+        }
     }
     else
-        dfs(next);
+        dfs(next, j);
 }
