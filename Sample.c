@@ -4,6 +4,7 @@
 /* Include */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* Define */
 #define MAX(a,b) a>b?a:b
