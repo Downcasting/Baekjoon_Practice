@@ -19,7 +19,9 @@ typedef struct point{
 
 /* Global Var */
 point* p1;
-point* p2, p3, p4;
+point* p2;
+point* p3;
+point* p4;
 
 /* Function Declarations */
 
@@ -35,4 +37,6 @@ int main(void){
 }
 
 /* Functions */
-int CCW()
+int CCW(point* a, point* b, point* c){
+    
+}
