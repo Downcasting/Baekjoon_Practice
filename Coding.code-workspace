@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"type_traits": "c",
+			"stdio.h": "c",
+			"stdlib.h": "c",
+			"cmath": "c",
+			"limits": "c",
+			"types.h": "c"
+		}
+	}
+}
