@@ -4,6 +4,7 @@
 # ---------- import 선언부 ----------
 
 import sys
+input = sys.stdin.read
 
 # ---------- 전역변수 선언부 ----------
 
@@ -37,13 +38,13 @@ def isNodeEarly(target: Vertice):
     return isEarly
 
 # 여기서부터 메인 코드가 시작됨
-
-num = int(input())
+data = input().splitlines()
+num = int(data[0])
 
 vertices = [Vertice() for _ in range(num + 1)]
 
-for _ in range(num-1):
-    a, b = map(int, input().split())
+for line in data[1:]:
+    a, b = map(int, line.split())
     vertices[a].neighbors.append(b)
     vertices[b].neighbors.append(a)
 
