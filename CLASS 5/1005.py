@@ -8,6 +8,7 @@ import sys
 # ---------- 전역변수 선언부 ----------
 
 input = sys.stdin.readline
+sys.setrecursionlimit(10**6)
 
 # ---------- 클래스 선언부 ----------
     
@@ -17,35 +18,40 @@ input = sys.stdin.readline
 
 def getTime(buildnum):
 
-    global building
+    global building_order
     global building_time
     global building_check
+    global building_time_dp
 
-    totalTime = 0
+    maxTime = 0
 
     if building_check[buildnum] == True:
-        return 0
+        return building_time_dp[buildnum]
     building_check[buildnum] = True
 
-    for i in building_time[building_num]:
-        totalTime += getTime(i)
+    for i in building_order[buildnum]:
+        maxTime = max(getTime(i), maxTime)
 
-    return totalTime
+    building_time_dp[buildnum] = maxTime + building_time[buildnum-1]
+    return building_time_dp[buildnum]
 # 여기서부터 메인 코드가 시작됨
 
 testcase = int(input())
 
-global building
+global building_order
 global building_time
 global building_check
+global building_time_dp
 
 for _ in range(testcase):
     building_num, laws = map(int, input().split())
-    building = [[] for _ in range(building_num+1)]
+    building_order = [[] for _ in range(building_num+1)]
     building_time = list(map(int, input().split()))
     building_check = [False] * (building_num+1)
+    building_time_dp = [0] * (building_num+1)
     for _ in range(laws):
         a,b = map(int, input().split())
-        building[b].append(a)
+        building_order[b].append(a)
     building_dest = int(input())
-    getTime(building_dest)
+    time = getTime(building_dest)
+    print(time)
