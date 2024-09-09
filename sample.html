@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        canvas{
+            background-color: whitesmoke;
+            display: block;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="can" width="480"  height="320"></canvas>
+</body>
+<script>
+    const canvas = document.getElementById("can");
+    const ctx = canvas.getContext("2d");
+    const ballRadius = 10;
+    let x = canvas.width/2;
+    let y = canvas.height - 30;
+
+    let dx = 2;
+    let dy = -2;
+
+    const paddleWidth= 75;
+    const paddleHeight= 30;
+    let paddleX = (canvas.width/2 - paddleWidth)/2;
+    let paddleY = canvas.height - 15;
+
+    let rightPressed = false;
+    let leftPressed = false;
+
+    let scorenum = 0;
+    let lifeNum = 3;
+
+    // key이벤트 추가 
+    document.addEventListener("keydown", keydownHandler, false);
+    document.addEventListener("keyup", keyupHandler, false);
+
+    function keydownHandler(e){
+        if(e.keyCode == 39){
+            rightPressed = true;
+        } else if (e.keyCode == 37){
+            leftPressed = true;
+        } 
+    }
+
+    function keyupHandler(e){
+        if(e.keyCode == 39){
+            rightPressed = false;
+        } else if (e.keyCode == 37){    
+            leftPressed = false;
+        }
+    }
+    
+    function life(){
+        ctx.font="16px Arial";
+        ctx.fillStyle="blue";
+        ctx.fillText("Life : " + lifeNum, 420,20);
+    }
+
+
+    function score(){
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "red";
+        ctx.fillText("score :"+scorenum, 8,20);
+        scorenum++;
+    }
+
+    function paddle(){
+        ctx.beginPath();
+        ctx.rect(paddleX, paddleY, paddleWidth, paddleHeight);
+        ctx.fillStyle = "orange";
+        ctx.fill();
+        ctx.closePath();
+    }
+
+
+    function ball(){
+        ctx.beginPath();
+        // arc(원의 중심의 x좌표, y좌표, 원의반지름, 시작각, 끝각, 그리는 방향);
+        ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+        ctx.fillStyle = "red";
+        ctx.fill();
+        ctx.strokeStyle = "black";
+        ctx.stroke();
+        ctx.closePath();
+    };
+
+
+    function draw(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ball();
+        paddle();
+        score();
+        life();
+        if(x >= canvas.width - ballRadius || x <= ballRadius){
+            dx = -dx; 
+        } 
+        if(y <= ballRadius){
+            dy = -dy;
+        } else if( y >= paddleY - ballRadius){
+            if(x >= paddleX && x <= paddleX + paddleWidth){
+                dy = - dy;
+            }
+            if(y >= canvas.height - ballRadius){
+                lifeNum --;
+            }else{
+            alert('게임종료\n 현재점수 : '+scorenum);
+            }
+        }  
+        if(rightPressed && paddleX <= canvas.width - paddleWidth){
+            paddleX +=7;
+        } 
+        if(leftPressed  && paddleX >=0){
+            paddleX -=7;
+        }   
+        x += dx;
+        y += dy;
+        
+    }
+    setInterval(draw, 10);
+
+</script>
+</html>
