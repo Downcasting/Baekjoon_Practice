@@ -20,6 +20,13 @@ weight = int(input())
 element_count = int(input())
 element = [int(input()) for _ in range(element_count)]
 
-print('weight is '+weight)
-print('element is '+element)
-print(element)
+# 첫 번째 줄 입력 처리
+weight, element_count = map(int, input().split())
+
+# 두 번째 줄 입력 처리
+elements = list(map(int, input().split()))
+
+# 출력 확인
+print("weight:", weight)
+print("element_count:", element_count)
+print("elements:", elements)
