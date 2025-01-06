@@ -7,7 +7,6 @@ import sys
 
 # ---------- 전역변수 선언부 ----------
 
-input = sys.stdin.read
 
 # ---------- 클래스 선언부 ----------
 
@@ -15,7 +14,5 @@ input = sys.stdin.read
 # ---------- 함수 선언부 ----------
 
 
-
 # 여기서부터 메인 코드가 시작됨
 
-data = input().splitlines()
