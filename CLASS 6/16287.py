@@ -16,9 +16,6 @@ import sys
 
 # 여기서부터 메인 코드가 시작됨
 
-weight = int(input())
-element_count = int(input())
-element = [int(input()) for _ in range(element_count)]
 
 # 첫 번째 줄 입력 처리
 weight, element_count = map(int, input().split())
